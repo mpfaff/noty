@@ -51,6 +51,23 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
         setupInput()
+
+        // Handle intent from Quick Settings tile
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent?.action == com.example.noty.utils.QuickNoteTileService.ACTION_ADD_NOTE) {
+            // Small delay to ensure UI is ready
+            binding.root.postDelayed({
+                showAddNoteDialog()
+            }, 100)
+        }
     }
 
     private fun checkNotificationPermission() {

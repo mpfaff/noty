@@ -25,4 +25,7 @@
     <string name="cd_empty_state">No notes yet. Tap the add button to create your first note.</string>
     <string name="cd_note_card">Note card. %1$s. Created %2$s</string>
     <string name="cd_dialog_drag_handle">Dialog drag handle</string>
+
+    <!-- Quick Settings Tile -->
+    <string name="tile_add_note">Quick Note</string>
 </resources>

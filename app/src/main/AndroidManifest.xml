@@ -22,6 +22,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Noty.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,13 +49,28 @@
             </intent-filter>
         </receiver>
 
-        <service 
+        <service
             android:name=".utils.NotyService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="false"
             android:foregroundServiceType="dataSync" />
 
+        <!-- Quick Settings Tile Service -->
+        <service
+            android:name=".utils.QuickNoteTileService"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_note"
+            android:label="@string/tile_add_note"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
 
     </application>
 
