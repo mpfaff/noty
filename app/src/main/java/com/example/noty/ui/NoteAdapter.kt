@@ -1,5 +1,6 @@
 package com.example.noty.ui
 
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import java.text.SimpleDateFormat
@@ -33,7 +34,8 @@ class NoteAdapter(private val onDeleteClick: (Note) -> Unit) :
 
         fun bind(note: Note) {
             binding.textTitle.text = note.title
-            binding.textTimestamp.text = DATE_FORMAT.format(Date(note.timestamp))
+            val formattedTime = DATE_FORMAT.format(Date(note.timestamp))
+            binding.textTimestamp.text = formattedTime
 
             if (!note.description.isNullOrEmpty()) {
                 binding.textDescription.text = note.description
@@ -42,8 +44,22 @@ class NoteAdapter(private val onDeleteClick: (Note) -> Unit) :
                 binding.textDescription.visibility = android.view.View.GONE
             }
 
+            // Set content description for accessibility
+            val contentDesc = "Note: ${note.title}. ${if (!note.description.isNullOrEmpty()) note.description + ". " else ""}Created $formattedTime"
+            binding.root.contentDescription = contentDesc
+
             binding.buttonDelete.setOnClickListener {
-                 onDeleteClick(note)
+                it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                onDeleteClick(note)
+            }
+
+            // Set proper content description for delete button
+            binding.buttonDelete.contentDescription = "Delete note: ${note.title}"
+
+            // Add subtle scale animation on card press
+            binding.root.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                // Future: Add edit functionality here
             }
         }
     }

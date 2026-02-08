@@ -75,4 +75,10 @@
         <item name="android:windowBackground">#121212</item>
         <item name="colorSurface">#121212</item>
     </style>
+
+    <!-- Dialog Animation Style -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
+    </style>
 </resources>

@@ -17,4 +17,12 @@
     <string name="type_work">Work</string>
     <string name="delete_confirmation">Delete this note?</string>
     <string name="delete">Delete</string>
+
+    <!-- Accessibility -->
+    <string name="cd_add_note_button">Add new note</string>
+    <string name="cd_delete_note_button">Delete note</string>
+    <string name="cd_theme_button">Change theme</string>
+    <string name="cd_empty_state">No notes yet. Tap the add button to create your first note.</string>
+    <string name="cd_note_card">Note card. %1$s. Created %2$s</string>
+    <string name="cd_dialog_drag_handle">Dialog drag handle</string>
 </resources>

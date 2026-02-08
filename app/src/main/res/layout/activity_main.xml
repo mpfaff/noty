@@ -67,13 +67,16 @@
                 android:orientation="vertical"
                 android:padding="24dp"
                 android:visibility="gone"
+                android:contentDescription="@string/cd_empty_state"
+                android:focusable="true"
                 tools:visibility="visible">
 
                 <ImageView
                     android:layout_width="240dp"
                     android:layout_height="240dp"
                     android:src="@drawable/ic_empty_notes"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorPrimary"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +112,7 @@
         app:backgroundTint="?attr/colorPrimaryContainer"
         app:iconTint="?attr/colorOnPrimaryContainer"
         android:textColor="?attr/colorOnPrimaryContainer"
-        android:contentDescription="@string/hint_add_note"
+        android:contentDescription="@string/cd_add_note_button"
         app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerLarge"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

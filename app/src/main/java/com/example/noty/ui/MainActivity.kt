@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.HapticFeedbackConstants
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.example.noty.R
 import com.example.noty.data.Note
 import com.example.noty.data.NoteType
@@ -73,6 +76,14 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
+        // Add smooth item animations
+        val itemAnimator = DefaultItemAnimator()
+        itemAnimator.addDuration = 400
+        itemAnimator.removeDuration = 300
+        itemAnimator.moveDuration = 300
+        itemAnimator.changeDuration = 300
+        binding.recyclerView.itemAnimator = itemAnimator
+
         viewModel.allNotes.observe(this) { notes ->
             adapter.submitList(notes)
             binding.emptyState.visibility = if (notes.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
@@ -87,6 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupInput() {
         binding.fabAddNote.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
             showAddNoteDialog()
         }
     }
@@ -99,6 +111,7 @@ class MainActivity : AppCompatActivity() {
         val editDescription = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editNoteDescription)
 
         dialogView.findViewById<android.widget.Button>(R.id.buttonCancel).setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
             dialog.dismiss()
         }
 
@@ -107,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             val description = editDescription.text.toString().trim()
 
             if (title.isNotEmpty()) {
+                it.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
                 viewModel.insert(Note(
                     title = title,
                     description = if (description.isEmpty()) null else description,
@@ -114,22 +128,32 @@ class MainActivity : AppCompatActivity() {
                 ))
                 dialog.dismiss()
             } else {
+                it.performHapticFeedback(HapticFeedbackConstants.REJECT)
                 editTitle.error = "Title is required"
             }
         }
 
         dialog.setContentView(dialogView)
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.show()
+
+        // Auto-focus title field and show keyboard
+        editTitle.requestFocus()
     }
 
     private fun showDeleteConfirmation(note: Note) {
+        binding.root.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.delete_confirmation)
             .setMessage("Are you sure you want to delete '${note.title}'?")
             .setPositiveButton(R.string.delete) { _, _ ->
+                binding.root.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
                 viewModel.delete(note)
             }
-            .setNegativeButton(R.string.action_cancel, null)
+            .setNegativeButton(R.string.action_cancel) { _, _ ->
+                binding.root.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+            }
             .show()
     }
 
@@ -163,7 +187,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            group.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
             val newMode = when (checkedId) {
                 R.id.radioSystem -> com.example.noty.utils.ThemeManager.ThemeMode.SYSTEM
                 R.id.radioLight -> com.example.noty.utils.ThemeManager.ThemeMode.LIGHT
@@ -175,6 +200,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dialog.setContentView(view)
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.show()
     }
 }
