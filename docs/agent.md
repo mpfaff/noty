@@ -134,6 +134,10 @@ noty/
 6. **Notifications via helper** — All notification operations must go through `NotificationHelper`. Do not create or cancel notifications directly.
 7. **Minimum SDK 26** — Do not use APIs below API 26 without appropriate version guards.
 
+📌 Note: Any new key rules discovered or decided during work on this project should be added to this section.
+📌 Note: If a rule is critical — something that must never be violated — add it to `claude.md` directly for maximum enforcement weight, in addition to listing it here.
+📌 If uncertain about any rule, re-read this file before proceeding.
+
 ---
 
 ## Documentation System
