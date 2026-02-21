@@ -69,6 +69,11 @@ class NotyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun update(note: Note) = viewModelScope.launch {
+        repository.update(note)
+        notificationHelper.showNotification(note)
+    }
+
     fun delete(note: Note) = viewModelScope.launch {
         repository.delete(note)
         notificationHelper.cancelNotification(note.id.toInt())

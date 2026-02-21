@@ -27,7 +27,7 @@
             android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textColor="?attr/colorOnSecondaryContainer"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMore"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Buy Groceries" />
@@ -60,13 +60,13 @@
             tools:text="Today, 4:00 PM" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonDelete"
+            android:id="@+id/buttonMore"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:padding="0dp"
-            app:icon="@drawable/ic_delete"
+            app:icon="@drawable/ic_more_vert"
             app:iconSize="24dp"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
@@ -74,7 +74,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/cd_delete_note_button"
+            android:contentDescription="@string/cd_more_options_button"
             android:alpha="0.6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

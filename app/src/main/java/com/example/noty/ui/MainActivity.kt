@@ -87,9 +87,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = NoteAdapter { note ->
-            showDeleteConfirmation(note)
-        }
+        adapter = NoteAdapter(
+            onEditClick = { note -> showEditNoteDialog(note) },
+            onDeleteClick = { note -> showDeleteConfirmation(note) }
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
@@ -157,6 +158,52 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
 
         // Auto-focus title field and show keyboard
+        editTitle.requestFocus()
+    }
+
+    private fun showEditNoteDialog(note: Note) {
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_note, null)
+
+        val titleDialog = dialogView.findViewById<android.widget.TextView>(R.id.titleDialog)
+        val editTitle = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editNoteTitle)
+        val editDescription = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editNoteDescription)
+        val switchSticky = dialogView.findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switchSticky)
+        val buttonSave = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.buttonSave)
+
+        titleDialog.text = getString(R.string.dialog_edit_note_title)
+        buttonSave.text = getString(R.string.action_update)
+        editTitle.setText(note.title)
+        editDescription.setText(note.description ?: "")
+        switchSticky.isChecked = note.isSticky
+
+        dialogView.findViewById<android.widget.Button>(R.id.buttonCancel).setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+            dialog.dismiss()
+        }
+
+        buttonSave.setOnClickListener {
+            val title = editTitle.text.toString().trim()
+            val description = editDescription.text.toString().trim()
+
+            if (title.isNotEmpty()) {
+                it.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                viewModel.update(note.copy(
+                    title = title,
+                    description = if (description.isEmpty()) null else description,
+                    isSticky = switchSticky.isChecked
+                ))
+                dialog.dismiss()
+            } else {
+                it.performHapticFeedback(HapticFeedbackConstants.REJECT)
+                editTitle.error = "Title is required"
+            }
+        }
+
+        dialog.setContentView(dialogView)
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.show()
+
         editTitle.requestFocus()
     }
 

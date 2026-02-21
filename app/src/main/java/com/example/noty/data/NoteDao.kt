@@ -3,6 +3,7 @@ package com.example.noty.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,6 +16,9 @@ interface NoteDao {
 
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteNoteById(noteId: Long)
+
+    @Update
+    suspend fun updateNote(note: Note)
 
     @Query("SELECT * FROM notes WHERE id = :noteId LIMIT 1")
     suspend fun getNoteById(noteId: Long): Note?

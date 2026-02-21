@@ -20,6 +20,16 @@ class NotyRepository(private val noteDao: NoteDao) {
         }
     }
 
+    suspend fun update(note: Note): Boolean {
+        return try {
+            noteDao.updateNote(note)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to update note", e)
+            false
+        }
+    }
+
     suspend fun delete(note: Note): Boolean {
         return try {
             noteDao.deleteNoteById(note.id)

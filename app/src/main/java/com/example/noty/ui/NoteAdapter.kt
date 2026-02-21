@@ -13,8 +13,10 @@ import com.example.noty.data.Note
 import com.example.noty.data.NoteType
 import com.example.noty.databinding.ItemNoteBinding
 
-class NoteAdapter(private val onDeleteClick: (Note) -> Unit) :
-    ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffCallback()) {
+class NoteAdapter(
+    private val onEditClick: (Note) -> Unit,
+    private val onDeleteClick: (Note) -> Unit
+) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffCallback()) {
 
     companion object {
         private val DATE_FORMAT = SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault())
@@ -48,18 +50,31 @@ class NoteAdapter(private val onDeleteClick: (Note) -> Unit) :
             val contentDesc = "Note: ${note.title}. ${if (!note.description.isNullOrEmpty()) note.description + ". " else ""}Created $formattedTime"
             binding.root.contentDescription = contentDesc
 
-            binding.buttonDelete.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                onDeleteClick(note)
+            binding.buttonMore.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+                val popup = android.widget.PopupMenu(it.context, it)
+                popup.menuInflater.inflate(com.example.noty.R.menu.note_item_menu, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        com.example.noty.R.id.action_edit -> {
+                            it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                            onEditClick(note)
+                            true
+                        }
+                        com.example.noty.R.id.action_delete -> {
+                            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                            onDeleteClick(note)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popup.show()
             }
 
-            // Set proper content description for delete button
-            binding.buttonDelete.contentDescription = "Delete note: ${note.title}"
-
-            // Add subtle scale animation on card press
             binding.root.setOnClickListener {
                 it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-                // Future: Add edit functionality here
+                onEditClick(note)
             }
         }
     }
