@@ -30,12 +30,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.SettingsActivity"
-            android:exported="false"
-            android:label="Settings"
-            android:parentActivityName=".ui.MainActivity" />
-
         <receiver 
             android:name=".utils.NotificationReceiver" 
             android:exported="false" />
