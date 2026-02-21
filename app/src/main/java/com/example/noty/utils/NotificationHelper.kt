@@ -110,11 +110,11 @@ class NotificationHelper(private val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .setOngoing(true)
+            .setOngoing(note.isSticky)
             .setContentIntent(pendingIntent)
             .setDeleteIntent(dismissPendingIntent)
             .addAction(R.drawable.ic_delete, "Delete", deletePendingIntent)
-            .setAutoCancel(false)
+            .setAutoCancel(!note.isSticky)
             .setLocalOnly(true)
 
         notificationManager.notify(note.id.toInt(), builder.build())

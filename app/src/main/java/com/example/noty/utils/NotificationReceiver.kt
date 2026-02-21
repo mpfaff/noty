@@ -31,8 +31,13 @@ class NotificationReceiver : BroadcastReceiver() {
                     NotificationHelper.ACTION_DISMISSED -> {
                         val note = database.noteDao().getNoteById(noteId)
                         if (note != null) {
-                            // Resurrect the notification because user wants them persistent
-                            notificationHelper.showNotification(note)
+                            if (note.isSticky) {
+                                // Sticky: resurrect the notification
+                                notificationHelper.showNotification(note)
+                            } else {
+                                // Non-sticky: swipe/clear deletes the note
+                                NotyRepository(database.noteDao()).deleteById(noteId)
+                            }
                         }
                     }
                 }

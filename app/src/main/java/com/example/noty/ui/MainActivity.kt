@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
 
         val editTitle = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editNoteTitle)
         val editDescription = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editNoteDescription)
+        val switchSticky = dialogView.findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switchSticky)
 
         dialogView.findViewById<android.widget.Button>(R.id.buttonCancel).setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
@@ -141,7 +142,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.insert(Note(
                     title = title,
                     description = if (description.isEmpty()) null else description,
-                    type = NoteType.NOTE
+                    type = NoteType.NOTE,
+                    isSticky = switchSticky.isChecked
                 ))
                 dialog.dismiss()
             } else {
