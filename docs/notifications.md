@@ -31,19 +31,22 @@ Each note notification includes:
 - **Title:** `note.title`
 - **Text:** `note.description` (empty if null)
 - **Timestamp:** `note.timestamp` (shown as relative time)
-- **`setOngoing(note.isSticky)`** — prevents user swipe-dismissal when `true`
-- **`setAutoCancel(!note.isSticky)`** — allows cancel-on-tap when `true` (non-sticky only)
+- **`setOngoing(note.isPinned)`** — prevents user swipe-dismissal when `true`
+- **`setAutoCancel(!note.isPinned)`** — allows cancel-on-tap when `true` (non-sticky only)
 - **Delete action button** → fires `ACTION_DELETE` broadcast
+- **Unpin action button** (pinned notes only) → fires `ACTION_UNPIN` broadcast; sets `isPinned=false` and removes the notification without deleting the note
 - **Dismiss PendingIntent** → fires `ACTION_DISMISSED` broadcast (behavior differs by sticky flag)
 - **Content PendingIntent** → opens `MainActivity`
 
 **Notification ID:** `note.id.toInt()` — unique and stable per note.
 
+**Only pinned notes (`isPinned = true`) get notifications.** Non-sticky notes exist in the DB but have no notification.
+
 ---
 
 ## Sticky vs Non-Sticky Behavior
 
-| Behavior | Sticky (`isSticky = true`) | Non-Sticky (`isSticky = false`) |
+| Behavior | Sticky (`isPinned = true`) | Non-Sticky (`isPinned = false`) |
 |----------|---------------------------|----------------------------------|
 | `setOngoing()` | `true` — cannot be swiped away | `false` |
 | `setAutoCancel()` | `false` | `true` — dismissed on tap |
@@ -56,7 +59,7 @@ Each note notification includes:
 User dismisses sticky notification (e.g. via "Clear all")
   → ACTION_DISMISSED PendingIntent fires
   → NotificationReceiver.onReceive(ACTION_DISMISSED)
-  → note.isSticky == true
+  → note.isPinned == true
   → NotificationHelper.showNotification(note) called immediately
   → Notification reappears
 ```
@@ -67,7 +70,7 @@ User dismisses sticky notification (e.g. via "Clear all")
 User swipes non-sticky notification
   → ACTION_DISMISSED PendingIntent fires
   → NotificationReceiver.onReceive(ACTION_DISMISSED)
-  → note.isSticky == false
+  → note.isPinned == false
   → repository.deleteById(note.id)
   → Room Flow emits updated list → UI recomposes
 ```
@@ -81,21 +84,23 @@ To avoid collisions between multiple notes, all `PendingIntent` request codes ar
 | Intent Type | Request Code |
 |-------------|-------------|
 | Content (open app) | `note.id.toInt()` |
-| Delete action | `note.id.toInt() + 1000` |
-| Dismiss | `note.id.toInt() + 2000` |
+| Delete action | `-note.id.toInt()` |
+| Dismiss | `Int.MIN_VALUE / 2 + note.id.toInt()` |
+| Unpin action | `note.id.toInt() + 3000` |
 
 ---
 
 ## Notification Broadcast Actions
 
-`NotificationReceiver` handles two action strings:
+`NotificationReceiver` handles three action strings:
 
 | Action | Effect |
 |--------|--------|
 | `ACTION_DELETE` (delete button tapped) | Calls `repository.deleteById(id)`, cancels the notification |
 | `ACTION_DISMISSED` (notification dismissed) | Resurrects if sticky; deletes note if non-sticky |
+| `ACTION_UNPIN` (unpin button tapped) | Updates note to `isPinned=false`, cancels notification; note stays in DB |
 
-Both actions carry `EXTRA_NOTE_ID` (Long) as an intent extra. Both use `goAsync()` to safely run coroutines inside the BroadcastReceiver.
+All actions carry `EXTRA_NOTE_ID` (Long) as an intent extra. All use `goAsync()` to safely run coroutines inside the BroadcastReceiver.
 
 ---
 
@@ -134,8 +139,8 @@ Room Flow emits updated notes list
   ↓
 ViewModel observes
   ↓
-notes.isNotEmpty() && !isServiceRunning  →  startForegroundService(NotyService)
-notes.isEmpty()    &&  isServiceRunning  →  stopService(NotyService)
+notes.any { isPinned } && !isServiceRunning  →  startForegroundService(NotyService)
+notes.none { isPinned } && isServiceRunning  →  stopService(NotyService)
 ```
 
 `isServiceRunning` is a boolean flag on `NotyViewModel` that prevents redundant start/stop calls when the note list emits the same state multiple times.

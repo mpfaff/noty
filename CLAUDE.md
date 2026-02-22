@@ -17,8 +17,5 @@ These rules must never be violated regardless of context:
 - **Service lifecycle** — `NotyService` is managed exclusively by `NotyViewModel`. Do not start or stop it from anywhere else.
 - **Notifications via helper** — All notification operations must go through `NotificationHelper`. Do not create or cancel notifications directly.
 
-Before starting any work, read /docs/agent.md and follow all rules and instructions defined there.
-When starting a new task, re-consult /docs/agent.md to ensure you are following the correct conventions.
-If uncertain about any rule or convention, re-read /docs/agent.md before proceeding.
-
-📄 For agent instructions, documentation system, and all project details — see /docs/agent.md
+ALWAYS read /docs/agent.md at session start and follow all rules defined there.
+ALWAYS re-check the relevant section in /docs/agent.md before working on a new feature or making an architectural decision.

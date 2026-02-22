@@ -18,6 +18,7 @@ class NotificationHelper(private val context: Context) {
         const val CHANNEL_ID_SERVICE = "noty_service_channel"
         const val ACTION_DELETE = "com.example.noty.ACTION_DELETE"
         const val ACTION_DISMISSED = "com.example.noty.ACTION_DISMISSED"
+        const val ACTION_UNPIN = "com.example.noty.ACTION_UNPIN"
         const val EXTRA_NOTE_ID = "extra_note_id"
     }
 
@@ -100,6 +101,15 @@ class NotificationHelper(private val context: Context) {
              context, Int.MIN_VALUE / 2 + note.id.toInt(), dismissIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val unpinIntent = Intent(context, NotificationReceiver::class.java).apply {
+            action = ACTION_UNPIN
+            putExtra(EXTRA_NOTE_ID, note.id)
+        }
+        // Use +3000 offset to avoid collision with other intents
+        val unpinPendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            context, note.id.toInt() + 3000, unpinIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         // Using the new custom pen nib icon for the status bar
         val icon = R.drawable.ic_stat_noty
 
@@ -110,12 +120,15 @@ class NotificationHelper(private val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .setOngoing(note.isSticky)
+            .setOngoing(true)
             .setContentIntent(pendingIntent)
             .setDeleteIntent(dismissPendingIntent)
-            .addAction(R.drawable.ic_delete, "Delete", deletePendingIntent)
-            .setAutoCancel(!note.isSticky)
             .setLocalOnly(true)
+
+        if (note.isPinned) {
+            builder.addAction(R.drawable.ic_unpin, "Unpin", unpinPendingIntent)
+        }
+        builder.addAction(R.drawable.ic_delete, "Delete", deletePendingIntent)
 
         notificationManager.notify(note.id.toInt(), builder.build())
     }
@@ -143,7 +156,7 @@ class NotificationHelper(private val context: Context) {
             emptySet()
         }
 
-        notes.forEach { note ->
+        notes.filter { it.isPinned }.forEach { note ->
             if (!activeNotifications.contains(note.id.toInt())) {
                 showNotification(note)
             }

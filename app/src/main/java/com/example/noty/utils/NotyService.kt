@@ -18,6 +18,7 @@ class NotyService : Service() {
     }
 
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var isObservingNotes = false
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -58,6 +59,27 @@ class NotyService : Service() {
             }
         }
 
+        // Observe notes and stop self when no pinned notes remain.
+        // Guards against the case where the ViewModel is not alive (e.g. boot-only start,
+        // or the user deleted the last pinned note via a notification action).
+        if (!isObservingNotes) {
+            isObservingNotes = true
+            serviceScope.launch(Dispatchers.IO) {
+                try {
+                    AppDatabase.getDatabase(applicationContext)
+                        .noteDao()
+                        .getAllNotes()
+                        .collect { notes ->
+                            if (notes.none { it.isPinned }) {
+                                stopSelf()
+                            }
+                        }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
         // START_STICKY ensures the OS tries to recreate the service if it's killed
         return START_STICKY
     }
@@ -74,7 +96,7 @@ class NotyService : Service() {
                 notificationHelper.syncNotifications(notes)
 
                 // Schedule service restart to ensure it keeps running
-                if (notes.isNotEmpty()) {
+                if (notes.any { it.isPinned }) {
                     val restartIntent = Intent(applicationContext, NotyService::class.java)
                     ContextCompat.startForegroundService(applicationContext, restartIntent)
                 }
@@ -86,6 +108,7 @@ class NotyService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        isObservingNotes = false
         serviceScope.cancel()
     }
 }

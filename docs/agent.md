@@ -74,7 +74,7 @@ noty/
 │   └── java/com/example/noty/
 │       ├── NotyApplication.kt            # Application class; theme initialization
 │       ├── data/
-│       │   ├── AppDatabase.kt            # Room database singleton (v4), migration 3→4
+│       │   ├── AppDatabase.kt            # Room database singleton (v5), migrations 3→4, 4→5
 │       │   ├── Note.kt                   # Note entity + NoteType enum
 │       │   ├── NoteDao.kt                # DAO: CRUD + reactive getAllNotes()
 │       │   └── NotyRepository.kt         # Repository: wraps DAO, exposes to ViewModel

@@ -10,7 +10,7 @@ data class Note(
     val description: String? = null,
     val type:  NoteType,
     val timestamp: Long = System.currentTimeMillis(),
-    val isSticky: Boolean = true
+    val isPinned: Boolean = true
 )
 
 enum class NoteType {

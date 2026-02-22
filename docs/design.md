@@ -105,7 +105,7 @@ User swipes notification (sticky = false)
                                                   │
                                          ┌────────▼────────┐
                                          │  AppDatabase    │
-                                         │  (SQLite v4)    │
+                                         │  (SQLite v5)    │
                                          └─────────────────┘
 
 Background / System:

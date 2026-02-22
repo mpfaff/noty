@@ -31,13 +31,21 @@ class NotificationReceiver : BroadcastReceiver() {
                     NotificationHelper.ACTION_DISMISSED -> {
                         val note = database.noteDao().getNoteById(noteId)
                         if (note != null) {
-                            if (note.isSticky) {
-                                // Sticky: resurrect the notification
+                            if (note.isPinned) {
+                                // Pinned: resurrect the notification
                                 notificationHelper.showNotification(note)
                             } else {
-                                // Non-sticky: swipe/clear deletes the note
+                                // Non-pinned: swipe/clear deletes the note (kept for future use)
                                 NotyRepository(database.noteDao()).deleteById(noteId)
                             }
+                        }
+                    }
+                    NotificationHelper.ACTION_UNPIN -> {
+                        val note = database.noteDao().getNoteById(noteId)
+                        if (note != null) {
+                            // Mark as unpinned — note stays in DB, notification is removed
+                            NotyRepository(database.noteDao()).update(note.copy(isPinned = false))
+                            notificationHelper.cancelNotification(noteId.toInt())
                         }
                     }
                 }

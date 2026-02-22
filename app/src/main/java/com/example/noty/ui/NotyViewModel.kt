@@ -46,7 +46,7 @@ class NotyViewModel(application: Application) : AndroidViewModel(application) {
         // android:stopWithTask="false" in manifest ensures this stays alive after swipe
         viewModelScope.launch {
             repository.getAllNotes().collect { notes ->
-                val shouldRun = notes.isNotEmpty()
+                val shouldRun = notes.any { it.isPinned }
                 if (shouldRun && !isServiceRunning) {
                     val intent = Intent(application, com.example.noty.utils.NotyService::class.java)
                     ContextCompat.startForegroundService(application, intent)
@@ -63,7 +63,7 @@ class NotyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun insert(note: Note) = viewModelScope.launch {
         val id = repository.insert(note)
-        if (id > 0) {
+        if (id > 0 && note.isPinned) {
             val noteWithId = note.copy(id = id)
             notificationHelper.showNotification(noteWithId)
         }
@@ -71,7 +71,11 @@ class NotyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun update(note: Note) = viewModelScope.launch {
         repository.update(note)
-        notificationHelper.showNotification(note)
+        if (note.isPinned) {
+            notificationHelper.showNotification(note)
+        } else {
+            notificationHelper.cancelNotification(note.id.toInt())
+        }
     }
 
     fun delete(note: Note) = viewModelScope.launch {

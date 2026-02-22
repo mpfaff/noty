@@ -265,13 +265,13 @@ fun NotyApp(
     if (showAddSheet) {
         NoteBottomSheet(
             onDismiss = { showAddSheet = false },
-            onSave = { title, description, isSticky ->
+            onSave = { title, description, isPinned ->
                 viewModel.insert(
                     Note(
                         title = title,
                         description = if (description.isEmpty()) null else description,
                         type = NoteType.NOTE,
-                        isSticky = isSticky
+                        isPinned = isPinned
                     )
                 )
                 showAddSheet = false
@@ -284,12 +284,12 @@ fun NotyApp(
         NoteBottomSheet(
             note = note,
             onDismiss = { noteToEdit = null },
-            onSave = { title, description, isSticky ->
+            onSave = { title, description, isPinned ->
                 viewModel.update(
                     note.copy(
                         title = title,
                         description = if (description.isEmpty()) null else description,
-                        isSticky = isSticky
+                        isPinned = isPinned
                     )
                 )
                 noteToEdit = null
@@ -480,12 +480,12 @@ fun NoteCard(
 fun NoteBottomSheet(
     note: Note? = null,
     onDismiss: () -> Unit,
-    onSave: (title: String, description: String, isSticky: Boolean) -> Unit
+    onSave: (title: String, description: String, isPinned: Boolean) -> Unit
 ) {
     val isEditing = note != null
     var title by remember { mutableStateOf(note?.title ?: "") }
     var description by remember { mutableStateOf(note?.description ?: "") }
-    var isSticky by remember { mutableStateOf(note?.isSticky ?: true) }
+    var isPinned by remember { mutableStateOf(note?.isPinned ?: true) }
     var titleError by remember { mutableStateOf(false) }
     val view = LocalView.current
 
@@ -512,11 +512,11 @@ fun NoteBottomSheet(
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Sticky", style = MaterialTheme.typography.bodyMedium)
+                    Text("Pin note", style = MaterialTheme.typography.bodyMedium)
                     Spacer(Modifier.width(8.dp))
                     Switch(
-                        checked = isSticky,
-                        onCheckedChange = { isSticky = it }
+                        checked = isPinned,
+                        onCheckedChange = { isPinned = it }
                     )
                 }
             }
@@ -570,7 +570,7 @@ fun NoteBottomSheet(
                         val trimmed = title.trim()
                         if (trimmed.isNotEmpty()) {
                             view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
-                            onSave(trimmed, description.trim(), isSticky)
+                            onSave(trimmed, description.trim(), isPinned)
                         } else {
                             view.performHapticFeedback(HapticFeedbackConstants.REJECT)
                             titleError = true
