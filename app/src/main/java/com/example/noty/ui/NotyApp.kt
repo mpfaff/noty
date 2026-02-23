@@ -364,7 +364,7 @@ fun NoteCard(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
     ) {
-        Column(modifier = Modifier.padding(start = 20.dp, end = 8.dp, top = 16.dp, bottom = 20.dp)) {
+        Column(modifier = Modifier.padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 20.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
