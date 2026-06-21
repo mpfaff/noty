@@ -1,4 +1,4 @@
-## [1.0] - 2026-06-21
+## [1.0.0] - 2026-06-21
 
 ### Added
 - Persistent notifications — every note appears as a pinned notification in the status bar
