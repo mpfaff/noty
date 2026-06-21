@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Noty — Feature Graphic  |  1024 × 500 px -->
+<!-- Export as JPEG or 24-bit PNG (no alpha) before uploading to Play Console -->
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <!-- Background gradient: deep purple → dark navy -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1024" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#1A0E38"/>
+      <stop offset="55%"  stop-color="#0F1F42"/>
+      <stop offset="100%" stop-color="#091B30"/>
+    </linearGradient>
+
+    <!-- Ambient glow behind left text -->
+    <radialGradient id="glowLeft" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#6650A4" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#6650A4" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Ambient glow behind right cards -->
+    <radialGradient id="glowRight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#006874" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#006874" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ── Background ──────────────────────────────────────────── -->
+  <rect width="1024" height="500" fill="url(#bgGrad)"/>
+
+  <!-- Ambient glows -->
+  <ellipse cx="240"  cy="260" rx="380" ry="280" fill="url(#glowLeft)"/>
+  <ellipse cx="770"  cy="240" rx="310" ry="230" fill="url(#glowRight)"/>
+
+  <!-- Decorative rings — top-right corner -->
+  <circle cx="990" cy="50"  r="200" fill="none" stroke="rgba(208,188,255,0.06)" stroke-width="1"/>
+  <circle cx="990" cy="50"  r="145" fill="none" stroke="rgba(208,188,255,0.04)" stroke-width="1"/>
+
+  <!-- Decorative soft circle — bottom-left -->
+  <circle cx="25"   cy="480" r="90"  fill="rgba(208,188,255,0.03)"/>
+
+
+  <!-- ── LEFT SIDE  (x 60–480) ────────────────────────────────── -->
+
+  <!-- App icon badge (rounded square) -->
+  <rect x="60" y="58" width="72" height="72" rx="18" fill="rgba(208,188,255,0.14)"/>
+
+  <!-- Bell icon — Material Design path (24×24 units), scaled ×1.67 to ~40×40,
+       translated so it sits centred inside the 72×72 badge at (60,58)           -->
+  <g transform="translate(76,66) scale(1.67)">
+    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z
+             M18 16v-5c0-3.07-1.64-5.64-4.5-6.32V4
+             c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68
+             C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+          fill="#D0BCFF"/>
+  </g>
+
+  <!-- App name -->
+  <text x="60" y="248"
+        font-family="'Google Sans','Product Sans',Roboto,Arial,sans-serif"
+        font-size="96" font-weight="700"
+        fill="white" letter-spacing="-3">Noty</text>
+
+  <!-- Subtitle -->
+  <text x="64" y="292"
+        font-family="Roboto,Arial,sans-serif"
+        font-size="24" font-weight="400"
+        fill="#D0BCFF" letter-spacing="0.4">Notes in Notification</text>
+
+  <!-- Tagline -->
+  <text x="65" y="336"
+        font-family="Roboto,Arial,sans-serif"
+        font-size="17" font-weight="300"
+        fill="rgba(255,255,255,0.5)">Your notes, always one swipe away.</text>
+
+  <!-- Accent dots -->
+  <circle cx="65"  cy="406" r="4" fill="#D0BCFF" opacity="0.50"/>
+  <circle cx="82"  cy="406" r="4" fill="#D0BCFF" opacity="0.28"/>
+  <circle cx="99"  cy="406" r="4" fill="#D0BCFF" opacity="0.13"/>
+
+
+  <!-- ── Divider ────────────────────────────────────────────── -->
+  <line x1="502" y1="48" x2="502" y2="452"
+        stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+
+  <!-- ── RIGHT SIDE — Notification Cards  (x 524–984) ──────────────────────
+       Card height: 118 px   Gap: 14 px
+       Card 1: y=60   Card 2: y=192   Card 3: y=324
+       Content rows  (relative to card top):
+         +30  App · time
+         +52  Title
+         +72  Body
+         +84  Separator line
+         +86–110  Button row  (Unpin left half | Delete right half)
+         +104 Button text baseline
+  ─────────────────────────────────────────────────────────────────────── -->
+
+  <!-- ─ Card 1  (fully visible, brightest) ─ -->
+  <rect x="524" y="60" width="460" height="118" rx="20" fill="rgba(255,255,255,0.11)"/>
+
+  <!-- App icon dot -->
+  <circle cx="562" cy="104" r="15" fill="#D0BCFF"/>
+  <text   x="562" y="109"
+          font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="700"
+          fill="#1A0E38" text-anchor="middle">N</text>
+
+  <!-- Content rows -->
+  <text x="590" y="90"  font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.50)">Noty  ·  now</text>
+  <text x="590" y="112" font-family="Roboto,Arial,sans-serif" font-size="17" font-weight="600" fill="white">Buy groceries</text>
+  <text x="590" y="134" font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.60)">Milk, eggs, bread, coffee</text>
+
+  <!-- Separator -->
+  <line x1="544" y1="144" x2="964" y2="144" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+  <!-- Vertical button divider -->
+  <line x1="754" y1="146" x2="754" y2="170" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+  <!-- Action buttons -->
+  <text x="639" y="164" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="#D0BCFF" text-anchor="middle">Unpin</text>
+  <text x="869" y="164" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="#F2B8B5" text-anchor="middle">Delete</text>
+
+
+  <!-- ─ Card 2  (slightly faded) ─ -->
+  <rect x="524" y="192" width="460" height="118" rx="20" fill="rgba(255,255,255,0.07)"/>
+
+  <circle cx="562" cy="236" r="15" fill="#D0BCFF" opacity="0.75"/>
+  <text   x="562" y="241"
+          font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="700"
+          fill="#1A0E38" text-anchor="middle">N</text>
+
+  <text x="590" y="222" font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.35)">Noty  ·  5m ago</text>
+  <text x="590" y="244" font-family="Roboto,Arial,sans-serif" font-size="17" font-weight="600" fill="rgba(255,255,255,0.85)">Call dentist</text>
+  <text x="590" y="266" font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.45)">Book appointment for Tuesday</text>
+
+  <line x1="544" y1="276" x2="964" y2="276" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <line x1="754" y1="278" x2="754" y2="302" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <text x="639" y="296" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="rgba(208,188,255,0.70)" text-anchor="middle">Unpin</text>
+  <text x="869" y="296" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="rgba(242,184,181,0.70)" text-anchor="middle">Delete</text>
+
+
+  <!-- ─ Card 3  (most faded, depth effect) ─ -->
+  <rect x="524" y="324" width="460" height="118" rx="20" fill="rgba(255,255,255,0.04)"/>
+
+  <circle cx="562" cy="368" r="15" fill="#D0BCFF" opacity="0.38"/>
+  <text   x="562" y="373"
+          font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="700"
+          fill="#1A0E38" text-anchor="middle">N</text>
+
+  <text x="590" y="354" font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.20)">Noty  ·  1h ago</text>
+  <text x="590" y="376" font-family="Roboto,Arial,sans-serif" font-size="17" font-weight="600" fill="rgba(255,255,255,0.48)">Review pull request</text>
+  <text x="590" y="398" font-family="Roboto,Arial,sans-serif" font-size="13" fill="rgba(255,255,255,0.24)">#42 — auth refactor</text>
+
+  <line x1="544" y1="408" x2="964" y2="408" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="754" y1="410" x2="754" y2="434" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <text x="639" y="428" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="rgba(208,188,255,0.38)" text-anchor="middle">Unpin</text>
+  <text x="869" y="428" font-family="Roboto,Arial,sans-serif" font-size="13" font-weight="500"
+        fill="rgba(242,184,181,0.38)" text-anchor="middle">Delete</text>
+
+</svg>

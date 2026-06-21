@@ -1,0 +1,99 @@
+package com.noty.app.ui
+
+import android.app.Application
+import android.content.Intent
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.noty.app.data.AppDatabase
+import com.noty.app.data.NotyRepository
+import com.noty.app.data.Note
+import com.noty.app.utils.NotificationHelper
+import com.noty.app.utils.ThemeManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+
+class NotyViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: NotyRepository
+    private val themeManager: ThemeManager
+    private val notificationHelper: NotificationHelper
+
+    init {
+        val noteDao = AppDatabase.getDatabase(application).noteDao()
+        repository = NotyRepository(noteDao)
+        themeManager = ThemeManager(application)
+        notificationHelper = NotificationHelper(application)
+    }
+
+    val allNotes = repository.getAllNotes().asLiveData()
+    val themeFlow = themeManager.themeFlow
+
+    // Track service state to prevent start/stop thrashing
+    private var isServiceRunning = false
+
+    init {
+        // Restore all notifications on app start
+        viewModelScope.launch {
+            val notes = repository.getAllNotes().first()
+            notificationHelper.syncNotifications(notes)
+        }
+
+        // Manage background service lifecycle based on note existence
+        // android:stopWithTask="false" in manifest ensures this stays alive after swipe
+        viewModelScope.launch {
+            repository.getAllNotes().collect { notes ->
+                val shouldRun = notes.any { it.isPinned }
+                if (shouldRun && !isServiceRunning) {
+                    val intent = Intent(application, com.noty.app.utils.NotyService::class.java)
+                    ContextCompat.startForegroundService(application, intent)
+                    isServiceRunning = true
+                } else if (!shouldRun && isServiceRunning) {
+                    val intent = Intent(application, com.noty.app.utils.NotyService::class.java)
+                    application.stopService(intent)
+                    isServiceRunning = false
+                }
+            }
+        }
+    }
+
+
+    fun insert(note: Note) = viewModelScope.launch {
+        val id = repository.insert(note)
+        if (id > 0 && note.isPinned) {
+            val noteWithId = note.copy(id = id)
+            notificationHelper.showNotification(noteWithId)
+        }
+    }
+
+    fun update(note: Note) = viewModelScope.launch {
+        repository.update(note)
+        if (note.isPinned) {
+            notificationHelper.showNotification(note)
+        } else {
+            notificationHelper.cancelNotification(note.id.toInt())
+        }
+    }
+
+    fun delete(note: Note) = viewModelScope.launch {
+        repository.delete(note)
+        notificationHelper.cancelNotification(note.id.toInt())
+    }
+
+    fun setTheme(mode: ThemeManager.ThemeMode) = viewModelScope.launch {
+        themeManager.setTheme(mode)
+    }
+}
+
+class NotyViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NotyViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return NotyViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

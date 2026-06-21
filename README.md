@@ -34,5 +34,17 @@ To provide the best experience, Noty requires a few permissions:
 -   **Notifications**: To pin your notes where you can see them.
 -   **Run at Startup**: To ensure your notes are restored automatically after your phone restarts.
 
+Noty has **no internet access** and collects no data. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
+
+## 📥 Download
+
+Noty is distributed on F-Droid as a [reproducible build](docs/fdroid.md) — the APK
+on F-Droid is signed with the same key as the [GitHub Releases](https://github.com/usamaiqb/noty/releases) build.
+
+## 📄 License
+
+Noty is free software licensed under the **GNU General Public License v3.0** — see
+[LICENSE](LICENSE).
+
 ---
 *Stay organized, stay productive.*

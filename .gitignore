@@ -3,7 +3,26 @@ bin/
 gen/
 out/
 build/
+release/
 .gradle/
+*.apk
+*.aab
+*.aar
+*.ap_
+*.dex
+
+# Signing — never commit the keystore or its passwords
+*.jks
+*.keystore
+keystore.properties
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+fastlane/google-play-key.json
 
 # Android Studio / IntelliJ files
 .idea/

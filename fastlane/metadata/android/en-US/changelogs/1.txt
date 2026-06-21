@@ -1,0 +1,1 @@
+Initial release of Noty — pin your notes as persistent notifications so you never forget them. Features include pinned notes, Quick Settings tile, light/dark/system themes with Material You, and automatic restoration after device restart.
