@@ -1,6 +1,15 @@
 # Noty — Notes in Your Notification Shade
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+<p align="center">
+  <a href="https://github.com/usamaiqb/noty/actions/workflows/ci.yml"><img src="https://github.com/usamaiqb/noty/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/usamaiqb/noty/releases/latest"><img src="https://img.shields.io/github/v/release/usamaiqb/noty" alt="Latest release" /></a>
+  <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3" /></a>
+  <br />
+  <img src="https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white" alt="Platform" />
+  <img src="https://img.shields.io/badge/API-26%2B%20(Android%208.0)-brightgreen" alt="Min API 26" />
+  <img src="https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin" />
+  <img src="https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white" alt="Jetpack Compose" />
+</p>
 
 A simple, privacy-focused notes app for Android that keeps your notes exactly where you look dozens of times a day — your notification shade.
 
