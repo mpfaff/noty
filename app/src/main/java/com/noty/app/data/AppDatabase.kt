@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Note::class], version = 5)
+@Database(entities = [Note::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
@@ -53,7 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
                 // Only use destructive migration in debug builds to prevent user data loss
                 val isDebuggable = (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
                 if (isDebuggable) {
-                    builder.fallbackToDestructiveMigration()
+                    builder.fallbackToDestructiveMigration(true)
                 }
                 val instance = builder.build()
                 INSTANCE = instance

@@ -36,6 +36,7 @@ class QuickNoteTileService : TileService() {
     // the PendingIntent overload (used on API 34+) does not exist there. The call is
     // correctly version-guarded, so the deprecation warning is suppressed.
     @SuppressLint("StartActivityAndCollapseDeprecated")
+    @Suppress("DEPRECATION")
     override fun onClick() {
         super.onClick()
 
