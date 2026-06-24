@@ -2,13 +2,10 @@
 
 <p align="center">
   <a href="https://github.com/usamaiqb/noty/actions/workflows/ci.yml"><img src="https://github.com/usamaiqb/noty/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/usamaiqb/noty/releases/latest"><img src="https://img.shields.io/github/v/release/usamaiqb/noty" alt="Latest release" /></a>
-  <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3" /></a>
-  <br />
+  <a href="https://f-droid.org/packages/com.noty.app/"><img src="https://img.shields.io/f-droid/v/com.noty.app?logo=fdroid&logoColor=white&label=F-Droid" alt="F-Droid" /></a>
   <img src="https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white" alt="Platform" />
-  <img src="https://img.shields.io/badge/API-26%2B%20(Android%208.0)-brightgreen" alt="Min API 26" />
-  <img src="https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin" />
   <img src="https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white" alt="Jetpack Compose" />
+  <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3" /></a>
 </p>
 
 A simple, privacy-focused notes app for Android that keeps your notes exactly where you look dozens of times a day — your notification shade.
@@ -29,10 +26,10 @@ A simple, privacy-focused notes app for Android that keeps your notes exactly wh
 <p align="center">
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="Notes list" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="Add note" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="Notification" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="Notes" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="Notification" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="Dark theme" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="Edit note" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="Search notes" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" alt="Theme selection" />
 </p>
 
@@ -40,7 +37,7 @@ A simple, privacy-focused notes app for Android that keeps your notes exactly wh
 
 ### F-Droid
 
-F-Droid submission is in progress — coming soon.
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/packages/com.noty.app/)
 
 ### GitHub Releases
 
