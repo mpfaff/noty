@@ -16,7 +16,7 @@ A simple, privacy-focused notes app for Android that keeps your notes exactly wh
 - 🔄 **Survives Restarts** — Notes are restored automatically after a phone restart
 - ✏️ **Add, Edit, Delete** — Create notes with a title and optional description; edit or delete any note with a tap
 - 📌 **Pin or Unpin Anytime** — Choose which notes appear as notifications; unpin a note and it moves back to the app without a notification
-- ⚡ **Quick Settings Tile** — Add a "Quick Note" tile to your Quick Settings panel to open the add-note screen without unlocking your phone
+- ⚡ **Quick Settings Tile** — Add a "Quick Note" tile to your Quick Settings panel to open the add-note screen
 - 🔍 **Search** — Filter notes by title or description
 - 🎨 **Material You** — Material 3 with dynamic color on Android 12+; Light, Dark, and System themes
 - 🔒 **100% Private** — No accounts, no cloud, no network access; your notes never leave your device
