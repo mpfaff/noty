@@ -36,6 +36,16 @@ jobs:
       - name: Run lint
         run: ./gradlew lint
 
+      - name: Build debug APK (debug signed)
+        run: ./gradlew assembleDebug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: app-debug.apk
+          path: app/build/outputs/apk/*
+          archive: false
+
       # Builds the release variant (R8 + resource shrinking) WITHOUT signing —
       # no keystore secrets needed. Catches minification/ProGuard regressions on
       # every PR instead of only at tag-cut time.
