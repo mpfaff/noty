@@ -36,6 +36,13 @@ jobs:
       - name: Run lint
         run: ./gradlew lint
 
+      - name: Upload lint report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lint-results-debug.html
+          path: app/build/reports/lint-results-debug.html
+          archive: false
+
       - name: Build debug APK (debug signed)
         run: ./gradlew assembleDebug
 
