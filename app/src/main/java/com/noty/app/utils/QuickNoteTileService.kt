@@ -8,7 +8,7 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.noty.app.R
-import com.noty.app.ui.MainActivity
+import com.noty.app.ui.AddNoteActivity
 
 /**
  * Quick Settings Tile Service for quickly adding notes
@@ -33,8 +33,7 @@ class QuickNoteTileService : TileService() {
     }
 
     private fun createAddNoteIntent(): Intent {
-        return Intent(this, MainActivity::class.java).apply {
-            action = ACTION_ADD_NOTE
+        return Intent(this, AddNoteActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
