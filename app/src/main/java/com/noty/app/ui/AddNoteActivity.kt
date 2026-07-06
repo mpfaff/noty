@@ -1,23 +1,19 @@
 package com.noty.app.ui
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import com.noty.app.data.Note
 import com.noty.app.data.NoteType
-import com.noty.app.utils.QuickNoteTileService
 import com.google.android.material.color.DynamicColors
 
 class AddNoteActivity : AppCompatActivity() {
@@ -34,21 +30,40 @@ class AddNoteActivity : AppCompatActivity() {
 
         setContent {
             NotyTheme {
-                NoteBottomSheet(
-                    onDismiss = { finish() },
-                    onSave = { title, description, isPinned ->
-                        viewModel.insert(
-                            Note(
-                                title = title,
-                                description = if (description.isEmpty()) null else description,
-                                type = NoteType.NOTE,
-                                isPinned = isPinned
-                            )
-                        )
-                        finish()
-                    }
+                NotyAddNotePage(
+                    viewModel = viewModel,
+                    onFinish = { finish() },
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun NotyAddNotePage(
+    viewModel: NotyViewModel,
+    onFinish: () -> Unit,
+) {
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            NoteForm(
+                onDismiss = onFinish,
+                onSave = { title, description, isPinned ->
+                    viewModel.insert(
+                        Note(
+                            title = title,
+                            description = if (description.isEmpty()) null else description,
+                            type = NoteType.NOTE,
+                            isPinned = isPinned
+                        )
+                    )
+                    onFinish()
+                }
+            )
         }
     }
 }

@@ -32,7 +32,8 @@
 
         <activity
             android:name=".ui.AddNoteActivity"
-            android:exported="true"
+            android:excludeFromRecents="true"
+            android:exported="false"
             android:launchMode="singleTop"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
