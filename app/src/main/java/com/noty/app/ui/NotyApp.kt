@@ -86,6 +86,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -578,7 +579,29 @@ fun NoteForm(
     var description by remember { mutableStateOf(note?.description ?: "") }
     var isPinned by remember { mutableStateOf(note?.isPinned ?: true) }
     var titleError by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     val haptics = LocalHapticFeedback.current
+
+    val titleFocusRequester = remember { FocusRequester() }
+    val descriptionFocusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(isEditing) {
+        // focus title for new notes, description for existing ones
+        if (!isEditing) titleFocusRequester.requestFocus()
+        else descriptionFocusRequester.requestFocus()
+    }
+
+    fun trySave() {
+        val trimmed = title.trim()
+        if (trimmed.isNotEmpty()) {
+            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+            onSave(trimmed, description.trim(), isPinned)
+        } else {
+            haptics.performHapticFeedback(HapticFeedbackType.Reject)
+            titleFocusRequester.requestFocus()
+            titleError = true
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -643,7 +666,11 @@ fun NoteForm(
                 { Text("Title is required") }
             } else null,
             singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(titleFocusRequester)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -653,8 +680,14 @@ fun NoteForm(
             onValueChange = { description = it },
             label = { Text("Description (optional)") },
             maxLines = 5,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = { trySave() },
+                onPrevious = { focusManager.moveFocus(FocusDirection.Up) },
+            ),
             modifier = Modifier
                 .fillMaxWidth()
+                .focusRequester(descriptionFocusRequester)
                 .heightIn(min = 120.dp)
         )
 
@@ -683,16 +716,7 @@ fun NoteForm(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(
-                onClick = {
-                    val trimmed = title.trim()
-                    if (trimmed.isNotEmpty()) {
-                        haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-                        onSave(trimmed, description.trim(), isPinned)
-                    } else {
-                        haptics.performHapticFeedback(HapticFeedbackType.Reject)
-                        titleError = true
-                    }
-                },
+                onClick = { trySave() },
                 shape = RoundedCornerShape(
                     topStart = 12.dp, topEnd = 28.dp,
                     bottomStart = 12.dp, bottomEnd = 28.dp
